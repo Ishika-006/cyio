@@ -1,8 +1,0 @@
-package com.ishika.foodwaste.web.service;
-import org.springframework.stereotype.Service;
-
-
-@Service
-public class NGOService {
-
-}

@@ -1,8 +1,0 @@
-package com.ishika.foodwaste.web.enums;
-
-public enum Role {
-	    DONOR,
-	    NGO,
-	    DELIVERY,
-	    ADMIN
-}
