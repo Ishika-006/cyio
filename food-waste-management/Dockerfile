@@ -1,14 +1,27 @@
-# Step 1: Use official OpenJDK 17 image
-FROM openjdk:17-jdk-slim
+# Stage 1: Build with Maven + JDK
+FROM maven:3.9.0-eclipse-temurin-17 AS build
 
-# Step 2: Set working directory inside container
 WORKDIR /app
 
-# Step 3: Copy the Maven built jar into container
-COPY target/web-ser-0.0.1-SNAPSHOT.jar app.jar
+# Copy parent pom.xml and modules (adjust path)
+COPY food-waste-management/pom.xml .
+COPY food-waste-management/jps-service ./jps-service
+COPY food-waste-management/web-ser ./web-ser
 
-# Step 4: Expose port (Render assigns dynamic PORT env variable)
+# Build the project (skip tests)
+RUN mvn clean package -DskipTests spring-boot:repackage
+
+# Stage 2: Run with lightweight JDK
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Copy the built jar from build stage
+COPY --from=build /app/web-ser/target/web-ser-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose port
 EXPOSE 8080
 
-# Step 5: Set default command to run the jar
+# Run Spring Boot app
 ENTRYPOINT ["java","-jar","/app/app.jar"]
+
