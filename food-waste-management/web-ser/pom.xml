@@ -59,7 +59,7 @@
         <!-- Connect to jpa-service module -->
    <dependency>
     <groupId>com.ishika.foodwaste</groupId>
-    <artifactId>jpa-service</artifactId>
+    <artifactId>jps-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
