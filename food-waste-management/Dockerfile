@@ -9,7 +9,8 @@ COPY food-waste-management/jps-service ./jps-service
 COPY food-waste-management/web-ser ./web-ser
 
 # Build the project (skip tests)
-RUN mvn clean package -DskipTests spring-boot:repackage
+RUN mvn clean package -DskipTests
+
 
 # Stage 2: Run with lightweight JDK
 FROM eclipse-temurin:17-jdk
