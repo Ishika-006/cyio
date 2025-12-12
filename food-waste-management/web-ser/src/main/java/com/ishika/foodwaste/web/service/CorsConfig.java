@@ -14,10 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("https://heroic-baklava-fb019a.netlify.app/")
+                    .allowedOrigins("*")
                     .allowedMethods("*")
                     .allowedHeaders("*")
-                    .allowCredentials(true); // ✅ This is important
+                    .allowCredentials(false); // ✅ This is important
             }
         };
     }
