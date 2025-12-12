@@ -87,7 +87,7 @@
     </dependency>
 
     </dependencies>
-  <build>
+<build>
     <plugins>
         <!-- Compiler Plugin -->
         <plugin>
@@ -118,5 +118,6 @@
         </plugin>
     </plugins>
 </build>
+
 
 </project>
