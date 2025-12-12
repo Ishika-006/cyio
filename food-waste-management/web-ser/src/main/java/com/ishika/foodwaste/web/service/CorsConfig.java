@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("*")
+                    .allowedOrigins("https://heroic-baklava-fb019a.netlify.app/")
                     .allowedMethods("*")
                     .allowedHeaders("*")
                     .allowCredentials(true); // ✅ This is important
