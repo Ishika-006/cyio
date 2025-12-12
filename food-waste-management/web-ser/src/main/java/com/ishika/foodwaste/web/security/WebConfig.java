@@ -14,7 +14,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // All endpoints
-                        .allowedOrigins("https://your-angular-site.netlify.app") // Frontend URL
+                        .allowedOrigins("https://iridescent-piroshki-644074.netlify.app") // Frontend URL
                         .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true); // if you use cookies/session
