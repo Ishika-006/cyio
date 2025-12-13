@@ -36,7 +36,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+
 @RestController
 @RequestMapping("/NGO")
 public class NGOController {
