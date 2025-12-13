@@ -40,7 +40,6 @@ import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/donor")
 public class DonorController {
