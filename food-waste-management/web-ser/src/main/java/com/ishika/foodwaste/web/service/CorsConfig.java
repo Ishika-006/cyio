@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("https://foodwaste-final-frontend.netlify.app")
+                    .allowedOrigins("https://foodwaste1-frontend.netlify.app")
                     .allowedMethods("*")
                     .allowedHeaders("*")
                     .allowCredentials(true); // ✅ This is important
