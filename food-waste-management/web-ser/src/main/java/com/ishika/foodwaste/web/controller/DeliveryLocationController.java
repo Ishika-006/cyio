@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.ishika.foodwaste.jpa.entity.DeliveryPerson;
 import com.ishika.foodwaste.jpa.utils.LocationDto;
 import com.ishika.foodwaste.web.service.DeliveryLocationService;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/deliveries")
 public class DeliveryLocationController {
