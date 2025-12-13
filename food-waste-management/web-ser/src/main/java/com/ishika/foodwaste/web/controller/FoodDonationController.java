@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ishika.foodwaste.jpa.entity.FoodDonation;
 import com.ishika.foodwaste.web.service.FoodDonationService;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/food-donations")
 public class FoodDonationController {
