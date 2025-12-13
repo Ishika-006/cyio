@@ -14,10 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins("*")
+                    .allowedOrigins("https://foodwaste-final-frontend.netlify.app")
                     .allowedMethods("*")
                     .allowedHeaders("*")
-                    .allowCredentials(false); // ✅ This is important
+                    .allowCredentials(true); // ✅ This is important
             }
         };
     }
