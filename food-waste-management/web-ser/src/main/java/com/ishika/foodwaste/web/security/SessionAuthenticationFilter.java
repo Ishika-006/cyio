@@ -20,65 +20,71 @@ import java.util.Collections;
 
 public class SessionAuthenticationFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+ @Override
+protected void doFilterInternal(HttpServletRequest request,
+                                HttpServletResponse response,
+                                FilterChain filterChain)
+        throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
+    // 🔹 Bypass login/register endpoints
+    String path = request.getRequestURI();
+    if (path.contains("/login") || path.contains("/register") || path.contains("/verify-email") || path.contains("/update-password")) {
+        filterChain.doFilter(request, response);
+        return;
+    }
 
-        if (session != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+    HttpSession session = request.getSession(false);
 
-            // 🔹 Admin
-            Object adminObj = session.getAttribute("admin");
-            if (adminObj instanceof Admin admin) {
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                admin,
-                                null,
-                                Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))
-                        )
-                );
-            }
+    if (session != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // 🔹 Delivery Person
-            Object deliveryObj = session.getAttribute("delivery");
-            if (deliveryObj instanceof DeliveryPerson delivery) {
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                delivery,
-                                null,
-                                Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
-                        )
-                );
-            }
-
-            // 🔹 Donor
-            Object donorObj = session.getAttribute("donor");
-            if (donorObj instanceof Donor donor && donor.getRole() == Role.DONOR) {
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                donor,
-                                null,
-                                Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
-                        )
-                );
-            }
-
-            // (Optional) 🔹 NGO
-            Object ngoObj = session.getAttribute("ngo");
-            if (ngoObj instanceof NGOS ngo && ngo.getRole() == Role.NGO) {
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(
-                                ngo,
-                                null,
-                                Collections.singletonList(new SimpleGrantedAuthority("NGO"))
-                        )
-                );
-            }
+        // 🔹 Admin
+        Object adminObj = session.getAttribute("admin");
+        if (adminObj instanceof Admin admin) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(
+                            admin,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))
+                    )
+            );
         }
 
-        filterChain.doFilter(request, response);
+        // 🔹 Delivery Person
+        Object deliveryObj = session.getAttribute("delivery");
+        if (deliveryObj instanceof DeliveryPerson delivery) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(
+                            delivery,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
+                    )
+            );
+        }
+
+        // 🔹 Donor
+        Object donorObj = session.getAttribute("donor");
+        if (donorObj instanceof Donor donor && donor.getRole() == Role.DONOR) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(
+                            donor,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
+                    )
+            );
+        }
+
+        // 🔹 NGO
+        Object ngoObj = session.getAttribute("ngo");
+        if (ngoObj instanceof NGOS ngo && ngo.getRole() == Role.NGO) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(
+                            ngo,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("NGO"))
+                    )
+            );
+        }
     }
+
+    filterChain.doFilter(request, response);
 }
