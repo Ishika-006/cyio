@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ishika.foodwaste.jpa.entity.UserFeedback;
 import com.ishika.foodwaste.web.service.FeedbackService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/feedbacks")
 public class FeedbackController {
