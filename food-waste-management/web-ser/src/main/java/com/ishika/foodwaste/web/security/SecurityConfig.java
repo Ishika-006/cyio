@@ -21,27 +21,30 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             
             .authorizeHttpRequests(auth -> auth
-            		 .requestMatchers("/admin/login", "/admin/register","/admin/logout").permitAll()
-            	        .requestMatchers("/delivery/login", "/delivery/register", "/delivery/custom-logout").permitAll()
-            	        .requestMatchers("/donor/login", "/donor/register","/donor/custom-logout").permitAll()
-            	        .requestMatchers("/donor/add").permitAll()
-            	        .requestMatchers("/donor/verify-email").permitAll()
-            	        .requestMatchers("/donor/update-password").permitAll()
-               	        .requestMatchers("/admin/verify-email").permitAll()
-            	        .requestMatchers("/admin/update-password").permitAll()
-            	        .requestMatchers("/NGO/verify-email").permitAll()
-            	        .requestMatchers("/delivery/update-password").permitAll()
-            	        .requestMatchers("/delivery/verify-email").permitAll()
-            	        .requestMatchers("/NGO/update-password").permitAll()
-            	        .requestMatchers("/api/deliveries/**").permitAll()
-            	        .requestMatchers("/NGO/login", "/NGO/register", "/NGO/custom-logout").permitAll()
-            	        .requestMatchers("/donor/**").hasAuthority("DONOR")
-            	        .requestMatchers("/NGO/**").hasAuthority("NGO")
-            	        .requestMatchers("/delivery/**").hasAuthority("DELIVERY")
-            	        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-            	        .requestMatchers("/feedbacks/**").permitAll() 
-            	        .anyRequest().authenticated()
-            	    )
+            	             .requestMatchers(
+                    "/admin/login", "/admin/register",
+                    "/donor/login", "/donor/register",
+                    "/delivery/login", "/delivery/register",
+                    "/NGO/login", "/NGO/register"
+                ).permitAll()
+
+                // ---------- EMAIL / PASSWORD ----------
+                .requestMatchers(
+                    "/admin/verify-email", "/admin/update-password",
+                    "/donor/verify-email", "/donor/update-password",
+                    "/delivery/verify-email", "/delivery/update-password",
+                    "/NGO/verify-email", "/NGO/update-password"
+                ).permitAll()
+
+                // ---------- ROLE PROTECTED ----------
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/donor/**").hasAuthority("DONOR")
+                .requestMatchers("/delivery/**").hasAuthority("DELIVERY")
+                .requestMatchers("/NGO/**").hasAuthority("NGO")
+
+                // ---------- EVERYTHING ELSE ----------
+                .anyRequest().authenticated()
+            )
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
