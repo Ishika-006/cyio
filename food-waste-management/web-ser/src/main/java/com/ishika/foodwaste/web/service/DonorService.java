@@ -60,7 +60,6 @@ public class DonorService implements DonorFacade{
 	    }
 	    @Override
 	    public boolean registerAdmin(Donor donor) {
-	    	donor.setPassword(passwordEncoder.encode(donor.getPassword()));
 	        return dm.save(donor);
 	    }
 	    
