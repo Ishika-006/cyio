@@ -74,7 +74,7 @@ protected void doFilterInternal(HttpServletRequest request,
                     new UsernamePasswordAuthenticationToken(
                         donor,
                         null,
-                        List.of(new SimpleGrantedAuthority("DONOR"))
+                        Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
                     );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
