@@ -52,47 +52,85 @@ public class DonorController {
     
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerAdmin(@RequestBody Donor donor) {
+      public ResponseEntity<?> register(@RequestBody Donor donor) {
+
+        System.out.println("🔵 [REGISTER] Request received");
+        System.out.println("Email: " + donor.getEmail());
+
+        // 🔐 Encode password before save
+        donor.setPassword(passwordEncoder.encode(donor.getPassword()));
+
         boolean success = donorService.registerAdmin(donor);
+
         if (success) {
-        	 manager.logActivity(donor.getName(), "registered as donor", "", "new");
-            return ResponseEntity.ok(Collections.singletonMap("message", "donor registered successfully"));
-        } else {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "donor registration failed"));
+            System.out.println("✅ [REGISTER] Success for " + donor.getEmail());
+            manager.logActivity(donor.getName(), "registered as donor", "", "new");
+            return ResponseEntity.ok(Map.of("message", "Donor registered successfully"));
         }
+
+        System.out.println("❌ [REGISTER] Failed for " + donor.getEmail());
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", "Donor registration failed"));
     }
+
     
     
     @PostMapping("/login")
-  public ResponseEntity<?> login(
-    @RequestBody Map<String, String> body,
-    HttpSession session) {
-    String email = body.get("email");
-    String password = body.get("password");
+    public ResponseEntity<?> login(
+            @RequestBody Map<String, String> body,
+            HttpSession session) {
+
+        System.out.println("🔵 [LOGIN] Request received");
+
+        String email = body.get("email");
+        String password = body.get("password");
+
+        System.out.println("Email: " + email);
+
         Donor donor = donorService.authenticate(email);
+
         if (donor == null) {
-            return ResponseEntity.status(401).body(Collections.singletonMap("error", "donor not found"));
+            System.out.println("❌ [LOGIN] Donor not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid email"));
         }
 
-        if (passwordEncoder.matches(password, donor.getPassword())) {
-            session.setAttribute("donor", donor); // store in session
-            manager.logActivity(donor.getName(), "login as donor", "", "new");
-            return ResponseEntity.ok(Collections.singletonMap("message", "donor login successful"));
-        } else {
-            return ResponseEntity.status(401).body(Collections.singletonMap("error", "Incorrect password"));
+        System.out.println("🔐 Stored Password Hash: " + donor.getPassword());
+
+        if (!passwordEncoder.matches(password, donor.getPassword())) {
+            System.out.println("❌ [LOGIN] Password mismatch");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid password"));
         }
+
+        // ✅ SESSION SET
+        session.setAttribute("donor", donor);
+        session.setMaxInactiveInterval(60 * 60); // 1 hour
+
+        System.out.println("✅ [LOGIN] Login successful");
+        System.out.println("🟢 Session ID: " + session.getId());
+
+        manager.logActivity(donor.getName(), "login as donor", "", "info");
+
+        return ResponseEntity.ok(Map.of("message", "Donor login successful"));
     }
+
 
     
     @PostMapping("/custom-logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) { 
-        HttpSession session = request.getSession(false); 
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
         if (session != null) {
-            session.invalidate();       
-            return ResponseEntity.ok("Logout successful.");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No session found.");
+            System.out.println("🔵 [LOGOUT] Session invalidated: " + session.getId());
+            session.invalidate();
+            return ResponseEntity.ok(Map.of("message", "Logout successful"));
         }
+
+        System.out.println("⚠️ [LOGOUT] No session found");
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", "No active session"));
     }
 
 
