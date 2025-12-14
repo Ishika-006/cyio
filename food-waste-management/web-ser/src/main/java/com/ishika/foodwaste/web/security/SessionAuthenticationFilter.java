@@ -62,15 +62,22 @@ protected void doFilterInternal(HttpServletRequest request,
         }
 
         // 🔹 Donor
-        Object donorObj = session.getAttribute("donor");
-        if (donorObj instanceof Donor donor) {
-            SecurityContextHolder.getContext().setAuthentication(
+      
+        if (session != null &&
+            SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            Donor donor = (Donor) session.getAttribute("donor");
+
+            if (donor != null) {
+                UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(
-                            donor,
-                            null,
-                            Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
-                    )
-            );
+                        donor,
+                        null,
+                        List.of(new SimpleGrantedAuthority("DONOR"))
+                    );
+
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
 
         // 🔹 NGO
