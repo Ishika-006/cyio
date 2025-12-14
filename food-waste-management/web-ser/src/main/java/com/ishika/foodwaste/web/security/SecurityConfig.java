@@ -22,6 +22,7 @@ public class SecurityConfig {
                .and()
             .csrf(csrf -> csrf.disable())
             
+              .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             .authorizeHttpRequests(auth -> auth
             	             .requestMatchers(
                     "/admin/login", "/admin/register",
