@@ -193,134 +193,116 @@ public class DonorController {
 
     
     
-    @PostMapping(value = "/addSell", consumes = "multipart/form-data")
-    public ResponseEntity<String> addDonationSell(
-            @RequestParam("name") String name,
-            @RequestParam("email") String email,
-            @RequestParam("phoneno") String phoneno,
-            @RequestParam("food") String food,
-            @RequestParam("type") String type,
-            @RequestParam("category") String category,
-            @RequestParam("quantity") String quantity,
-            @RequestParam("price") Integer price,
-            @RequestParam("address") String address,
-            @RequestParam("location") String location,
-            @RequestParam("date") String date,
-            @RequestParam("image") MultipartFile image,
-            HttpSession session
-    ) {
-        try {
-            // ✅ Get donor from session
-            Donor donor = (Donor) session.getAttribute("donor");
-            if (donor == null) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
-            }
-
-            FoodDonation donation = new FoodDonation();
-            donation.setName(name);
-            donation.setEmail(email);
-            donation.setPhoneno(phoneno);
-            donation.setFood(food);
-            donation.setType(type);
-            donation.setCategory(category);
-            donation.setQuantity(quantity);
-            donation.setPrice(price);
-            donation.setAddress(address);
-            donation.setLocation(location);
-            donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
-            donation.setImage(image.getBytes());
-
-            // ✅ Set donor
-            donation.setDonor(donor);
-            // **Set status to PENDING here**
-            donation.setStatus(DonationStatus.PENDING);
-
-            boolean added = donorService.addDonation(donation);
-        
-
-            if (added) {
-                manager.logActivity(
-                    donor.getName(),
-                    "donated food",
-                    food + " (" + quantity + ")",
-                    "pending"
-                );
-                return ResponseEntity.ok("Donation saved successfully!");
-            } else {
-                return ResponseEntity.status(500).body("Failed to save donation.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+  @PostMapping(value = "/adddonate", consumes = "multipart/form-data")
+public ResponseEntity<String> addDonation(
+        @RequestParam("name") String name,
+        @RequestParam("email") String email,
+        @RequestParam("phoneno") String phoneno,
+        @RequestParam("food") String food,
+        @RequestParam("type") String type,
+        @RequestParam("category") String category,
+        @RequestParam("quantity") String quantity,
+        @RequestParam("address") String address,
+        @RequestParam("location") String location,
+        @RequestParam("date") String date,
+        @RequestParam("image") MultipartFile image,
+        HttpSession session
+) {
+    try {
+        // ✅ Get donor from session
+        Donor donor = (Donor) session.getAttribute("donor");
+        if (donor == null) {
+            System.out.println("⚠️ [ADD DONATE] User not logged in");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
         }
-    }
-    
-    
-    
-    
-    @PostMapping(value = "/adddonate", consumes = "multipart/form-data")
-    public ResponseEntity<String> addDonation(
-            @RequestParam("name") String name,
-            @RequestParam("email") String email,
-            @RequestParam("phoneno") String phoneno,
-            @RequestParam("food") String food,
-            @RequestParam("type") String type,
-            @RequestParam("category") String category,
-            @RequestParam("quantity") String quantity,
-            @RequestParam("address") String address,
-            @RequestParam("location") String location,
-            @RequestParam("date") String date,
-            @RequestParam("image") MultipartFile image,
-            HttpSession session
-    ) {
-        try {
-            // ✅ Get donor from session
-            Donor donor = (Donor) session.getAttribute("donor");
-            if (donor == null) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
-            }
 
-            FoodDonation donation = new FoodDonation();
-            donation.setName(name);
-            donation.setEmail(email);
-            donation.setPhoneno(phoneno);
-            donation.setFood(food);
-            donation.setType(type);
-            donation.setCategory(category);
-            donation.setQuantity(quantity);
-            donation.setAddress(address);
-            donation.setLocation(location);
-            donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
-            donation.setImage(image.getBytes());
+        FoodDonation donation = new FoodDonation();
+        donation.setName(name);
+        donation.setEmail(email);
+        donation.setPhoneno(phoneno);
+        donation.setFood(food);
+        donation.setType(type);
+        donation.setCategory(category);
+        donation.setQuantity(quantity);
+        donation.setAddress(address);
+        donation.setLocation(location);
+        donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+        donation.setImage(image.getBytes());
 
-            // ✅ Set donor
-            donation.setDonor(donor);
-            // Set donor
+        // ✅ Set donor & status
+        donation.setDonor(donor);
+        donation.setStatus(DonationStatus.PENDING);
 
-            // **Set status to PENDING here**
-            donation.setStatus(DonationStatus.PENDING);
-
-
-            boolean added = donorService.addDonation(donation);
-            
-
-             if (added) {
-                manager.logActivity(
-                        donor.getName(),
-                        "donated food",
-                        food + " (" + quantity + ")",
-                        "pending"
-                    );
-                    return ResponseEntity.ok("Donation saved successfully!");
-                } else {
-                    return ResponseEntity.status(500).body("Failed to save donation.");
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        boolean added = donorService.addDonation(donation);
+        if (added) {
+            System.out.println("✅ [ADD DONATE] Donation saved: " + food);
+            manager.logActivity(donor.getName(), "donated food", food + " (" + quantity + ")", "pending");
+            return ResponseEntity.ok("Donation saved successfully!");
+        } else {
+            System.out.println("❌ [ADD DONATE] Failed to save donation");
+            return ResponseEntity.status(500).body("Failed to save donation.");
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("Error: " + e.getMessage());
     }
-    
+}
+
+@PostMapping(value = "/addSell", consumes = "multipart/form-data")
+public ResponseEntity<String> addSell(
+        @RequestParam("name") String name,
+        @RequestParam("email") String email,
+        @RequestParam("phoneno") String phoneno,
+        @RequestParam("food") String food,
+        @RequestParam("type") String type,
+        @RequestParam("category") String category,
+        @RequestParam("quantity") String quantity,
+        @RequestParam("price") Integer price,
+        @RequestParam("address") String address,
+        @RequestParam("location") String location,
+        @RequestParam("date") String date,
+        @RequestParam("image") MultipartFile image,
+        HttpSession session
+) {
+    try {
+        Donor donor = (Donor) session.getAttribute("donor");
+        if (donor == null) {
+            System.out.println("⚠️ [ADD SELL] User not logged in");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
+        }
+
+        FoodDonation donation = new FoodDonation();
+        donation.setName(name);
+        donation.setEmail(email);
+        donation.setPhoneno(phoneno);
+        donation.setFood(food);
+        donation.setType(type);
+        donation.setCategory(category);
+        donation.setQuantity(quantity);
+        donation.setPrice(price);
+        donation.setAddress(address);
+        donation.setLocation(location);
+        donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+        donation.setImage(image.getBytes());
+
+        donation.setDonor(donor);
+        donation.setStatus(DonationStatus.PENDING);
+
+        boolean added = donorService.addDonation(donation);
+        if (added) {
+            System.out.println("✅ [ADD SELL] Sell saved: " + food);
+            manager.logActivity(donor.getName(), "sold food", food + " (" + quantity + ")", "pending");
+            return ResponseEntity.ok("Sell saved successfully!");
+        } else {
+            System.out.println("❌ [ADD SELL] Failed to save sell");
+            return ResponseEntity.status(500).body("Failed to save sell.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("Error: " + e.getMessage());
+    }
+}
+
     
     @GetMapping("/deliveries")
     public ResponseEntity<List<DeliveryDto>> getDonorDeliveries(HttpSession session) {
