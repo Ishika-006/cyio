@@ -64,7 +64,11 @@ public class DonorController {
     
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
+  public ResponseEntity<?> login(
+    @RequestBody Map<String, String> body,
+    HttpSession session) {
+    String email = body.get("email");
+    String password = body.get("password");
         Donor donor = donorService.authenticate(email);
         if (donor == null) {
             return ResponseEntity.status(401).body(Collections.singletonMap("error", "donor not found"));
