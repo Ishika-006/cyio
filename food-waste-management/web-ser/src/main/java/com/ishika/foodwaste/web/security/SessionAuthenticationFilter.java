@@ -63,7 +63,7 @@ protected void doFilterInternal(HttpServletRequest request,
 
         // 🔹 Donor
         Object donorObj = session.getAttribute("donor");
-        if (donorObj instanceof Donor donor && donor.getRole() == Role.DONOR) {
+        if (donorObj instanceof Donor donor) {
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(
                             donor,
