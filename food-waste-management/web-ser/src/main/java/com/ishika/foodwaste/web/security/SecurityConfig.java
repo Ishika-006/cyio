@@ -22,8 +22,8 @@ public class SecurityConfig {
                .and()
             .csrf(csrf -> csrf.disable())
             
-              .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             .authorizeHttpRequests(auth -> auth
+                              .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             	             .requestMatchers(
                     "/admin/login", "/admin/register",
                     "/donor/login", "/donor/register",
@@ -62,4 +62,24 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+
+    config.setAllowedOrigins(
+        List.of("https://foodwaste7-frontend.netlify.app")
+    );
+    config.setAllowedMethods(
+        List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+    );
+    config.setAllowedHeaders(List.of("*"));
+    config.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+
+    return source;
+}
 }
