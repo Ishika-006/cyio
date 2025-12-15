@@ -77,7 +77,7 @@ public ResponseEntity<?> login(
     }
 
     // ✅ SAME AS DONOR
-    session.setAttribute("adminId", admin.getId());
+    session.setAttribute("adminId", admin.getAid());
     session.setMaxInactiveInterval(60 * 60);
 
     manager.logActivity(admin.getName(), "login as admin", "", "info");
