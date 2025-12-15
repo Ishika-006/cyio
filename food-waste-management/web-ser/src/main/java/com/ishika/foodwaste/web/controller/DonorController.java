@@ -210,7 +210,7 @@ public ResponseEntity<String> addDonation(
 ) {
     try {
         // ✅ Get donor from session
-		Long donorId = (Long) session.getAttribute("donorId");
+		Integer donorId = (Integer) session.getAttribute("donorId");
 		if (donorId == null) {
 		    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
 		}
@@ -270,7 +270,7 @@ public ResponseEntity<String> addSell(
         HttpSession session
 ) {
     try {
-		       Long donorId = (Long) session.getAttribute("donorId");
+		       Integer donorId = (Integer) session.getAttribute("donorId");
 		if (donorId == null) {
 		    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
 		}
@@ -315,7 +315,7 @@ public ResponseEntity<String> addSell(
     
     @GetMapping("/deliveries")
 public ResponseEntity<List<DeliveryDto>> getDonorDeliveries(HttpSession session) {
-    Long donorId = (Long) session.getAttribute("donorId");
+    Integer donorId = (Integer) session.getAttribute("donorId");
     if (donorId == null) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
@@ -339,14 +339,14 @@ public ResponseEntity<LocationDto> getDeliveryLocation(
         @PathVariable String fid,
         HttpSession session) {
 
-    Long donorId = (Long) session.getAttribute("donorId");
+   Integer donorId = (Integer) session.getAttribute("donorId");
     if (donorId == null) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    Long deliveryId;
+    int deliveryId;
     try {
-        deliveryId = Long.parseLong(fid);
+        deliveryId = Integer.parseInt(fid);
     } catch (NumberFormatException e) {
         return ResponseEntity.badRequest().build();
     }
@@ -403,7 +403,7 @@ public ResponseEntity<LocationDto> getDeliveryLocation(
     }
 @GetMapping("/recent")
 public List<FoodDonation> getRecentDonations(HttpSession session) {
-    Long donorId = (Long) session.getAttribute("donorId");
+   Integer donorId = (Integer) session.getAttribute("donorId");
     if (donorId == null) {
         return Collections.emptyList();
     }
