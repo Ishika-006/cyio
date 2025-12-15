@@ -75,12 +75,6 @@ public ResponseEntity<?> loginDelivery(@RequestBody Map<String, String> body, Ht
     session.setAttribute("deliveryId", person.getDid());
     session.setMaxInactiveInterval(60 * 60); // 1 hour
 
-    // ✅ Spring Security context
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            person, null, Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
-    );
-    SecurityContextHolder.getContext().setAuthentication(auth);
-
     System.out.println("✅ DeliveryPerson login successful. Session ID: " + session.getId());
     manager.logActivity(person.getName(), "login as delivery person", "", "info");
 
