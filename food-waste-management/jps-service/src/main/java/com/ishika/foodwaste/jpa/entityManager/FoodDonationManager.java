@@ -174,7 +174,7 @@ public class FoodDonationManager {
         }
     }
     
-    public List<FoodDonation> getRecentDonationsByDonor(Long donorId) {
+    public List<FoodDonation> getRecentDonationsByDonor(int donorId) {
         try {
             TypedQuery<FoodDonation> query = em.createNamedQuery("FoodDonation.findRecentByDonor", FoodDonation.class);
             query.setParameter("donorId", donorId);
