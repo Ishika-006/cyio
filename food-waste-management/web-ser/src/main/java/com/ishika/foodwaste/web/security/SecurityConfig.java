@@ -72,7 +72,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
 
     config.setAllowedOrigins(
-        List.of("https://foodwaste10-frontend.netlify.app")
+        List.of("https://foodwaste13-frontend.netlify.app")
     );
     config.setAllowedMethods(
         List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
