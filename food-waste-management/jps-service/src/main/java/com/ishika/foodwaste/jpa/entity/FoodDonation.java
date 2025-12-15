@@ -120,12 +120,12 @@ import com.ishika.foodwaste.jpa.enums.DonationStatus;
     private Donor donor;
 
 
-	public int getFid() {
+	public Long getFid() {
 		return fid;
 	}
 
 
-	public void setFid(int fid) {
+	public void setFid(Long fid) {
 		this.fid = fid;
 	}
 
