@@ -103,7 +103,7 @@ public class DeliveryPersonManager {
 	        }
 	    }
 	    @Transactional
-	    public DeliveryPerson findById(Long id) {
+	    public DeliveryPerson findById(int id) {
 	        try {
 	            TypedQuery<DeliveryPerson> query = em.createQuery(
 	                "SELECT d FROM DeliveryPerson d WHERE d.did = :id",
