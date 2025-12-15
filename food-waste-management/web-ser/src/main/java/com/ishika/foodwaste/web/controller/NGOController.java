@@ -67,34 +67,42 @@ public class NGOController {
 	    
 	    
 	    
-	     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
-        NGOS ngo = ngoService.authenticate(email);
+	@PostMapping("/login")
+public ResponseEntity<?> loginNGO(@RequestBody Map<String, String> body, HttpSession session) {
 
-        Map<String, String> response = new HashMap<>();
+    System.out.println("🔵 [LOGIN] NGO request received");
 
-        if (ngo == null) {
-            response.put("error", "NGO not found");
-            return ResponseEntity.status(401).body(response);
-        }
+    String email = body.get("email");
+    String password = body.get("password");
 
-        if (passwordEncoder.matches(password, ngo.getPassword())) {
-            session.setAttribute("ngoId", ngo.getId()); // ✅ store ngoId like donorId
-
-            // ✅ Set Spring Security authentication manually
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                ngo, null, Collections.singletonList(new SimpleGrantedAuthority("NGO"))
-            );
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            response.put("message", "NGO login successful");
-            manager.logActivity(ngo.getName(), "login as ngo", "", "new");
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("error", "Incorrect password");
-            return ResponseEntity.status(401).body(response);
-        }
+    NGOS ngo = ngoService.authenticate(email);
+    if (ngo == null) {
+        System.out.println("❌ NGO not found");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "NGO not found"));
     }
+
+    if (!passwordEncoder.matches(password, ngo.getPassword())) {
+        System.out.println("❌ Password mismatch for NGO");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Incorrect password"));
+    }
+
+    // ✅ SESSION
+    session.setAttribute("ngoId", ngo.getId());
+    session.setMaxInactiveInterval(60 * 60); // 1 hour
+
+    // ✅ Spring Security context
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+            ngo, null, Collections.singletonList(new SimpleGrantedAuthority("NGO"))
+    );
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
+    System.out.println("✅ NGO login successful. Session ID: " + session.getId());
+    manager.logActivity(ngo.getName(), "login as NGO", "", "info");
+
+    return ResponseEntity.ok(Map.of("message", "NGO login successful"));
+}
 
    
    @PostMapping("/custom-logout")
