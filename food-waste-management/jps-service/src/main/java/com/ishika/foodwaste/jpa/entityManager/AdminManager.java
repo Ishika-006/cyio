@@ -182,20 +182,6 @@ public class AdminManager {
 	        return result;
 	    }
 	    
-	    public Admin authenticate(String email, String password) {
-	        TypedQuery<Admin> query = entityManager.createQuery(
-	            "SELECT a FROM Admin a WHERE a.email = :email", Admin.class);
-	        query.setParameter("email", email);
-
-	        List<Admin> result = query.getResultList();
-	        if (!result.isEmpty()) {
-	            Admin admin = result.get(0);
-	            if (BCrypt.checkpw(password, admin.getPassword())) {
-	                return admin;
-	            }
-	        }
-	        return null;
-	    }
 	    @Transactional
 	    public boolean saveAdmin(Admin admin) {
 	        try {
