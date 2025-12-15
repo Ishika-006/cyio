@@ -48,7 +48,6 @@ public class DeliveryService implements DeliveryFacade {
 	            return "Account already exists";
 	        }
 
-	        person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
 	        deliveryManager.save(person);
 	        return "Registration successful";
 	    }
