@@ -34,15 +34,15 @@ public class DeliveryPersonManager {
 	            return null;
 	        }
 	    }
-	    @Transactional
-	    public DeliveryPerson findById(int id) {
-	        try {
-	            return em.find(DeliveryPerson.class, id); // simple entity lookup
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
+	    // @Transactional
+	    // public DeliveryPerson findById(int id) {
+	    //     try {
+	    //         return em.find(DeliveryPerson.class, id); // simple entity lookup
+	    //     } catch (Exception e) {
+	    //         e.printStackTrace();
+	    //         return null;
+	    //     }
+	    // }
 
 
 	    // ✅ Get orders assigned to this delivery person
