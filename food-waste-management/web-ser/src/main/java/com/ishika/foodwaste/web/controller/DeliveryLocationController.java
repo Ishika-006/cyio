@@ -23,7 +23,7 @@ public class DeliveryLocationController {
     }
 
     @PostMapping("/{deliveryId}/location")
-    public ResponseEntity<Void> updateLocation(@PathVariable Long deliveryId, @RequestBody LocationDto location) {
+    public ResponseEntity<Void> updateLocation(@PathVariable int deliveryId, @RequestBody LocationDto location) {
         DeliveryPerson person = dls.findDeliveryPersonById(deliveryId);
         if (person == null) {
             return ResponseEntity.notFound().build();  // 404 if not found
@@ -35,7 +35,7 @@ public class DeliveryLocationController {
     }
 
     @GetMapping("/{deliveryId}/location")
-    public ResponseEntity<LocationDto> getDeliveryPersonLocation(@PathVariable Long deliveryId) {
+    public ResponseEntity<LocationDto> getDeliveryPersonLocation(@PathVariable int deliveryId) {
         DeliveryPerson person = dls.findDeliveryPersonById(deliveryId);
         if (person == null) {
             return ResponseEntity.notFound().build(); // 404 if not found
