@@ -18,6 +18,8 @@ import com.ishika.foodwaste.web.service.DonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ishika.foodwaste.web.service.AdminService;
+import com.ishika.foodwaste.web.service.NGOService;
+import com.ishika.foodwaste.web.service.DeliveryService;
 import java.util.List;
 
 import java.io.IOException;
@@ -30,8 +32,10 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
     private DonorService donorService;
      @Autowired
     private AdminService adminService;
-       @Autowired
-    private com.ishika.foodwaste.web.service.NGOService ngoService;
+    @Autowired
+    private NGOService ngoService;
+    @Autowired
+    private DeliveryService deliveryService;
  @Override
 protected void doFilterInternal(HttpServletRequest request,
                                 HttpServletResponse response,
@@ -65,18 +69,21 @@ protected void doFilterInternal(HttpServletRequest request,
             }
             
 
-        // 🔹 Delivery Person
-        Object deliveryObj = session.getAttribute("delivery");
-        if (deliveryObj instanceof DeliveryPerson delivery) {
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(
-                            delivery,
-                            null,
-                            Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
-                    )
-            );
-        }
 
+      // 🔹 Delivery Person
+            Integer deliveryId = (Integer) session.getAttribute("deliveryId"); // ✅ use deliveryId like donorId
+            if (deliveryId != null) {
+                DeliveryPerson delivery = deliveryService.findById(deliveryId);
+                if (delivery != null) {
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(
+                                    delivery,
+                                    null,
+                                    Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
+                            )
+                    );
+                }
+            }
         // 🔹 Donor
       
    Integer donorId = (Integer) session.getAttribute("donorId");
