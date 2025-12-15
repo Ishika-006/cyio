@@ -50,26 +50,43 @@ public class DeliveryController {
     @Autowired
     RecentActivityManager manager;
     
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
-        DeliveryPerson person = deliveryService.authenticate(email);
-        Map<String, String> response = new HashMap<>();
+   @PostMapping("/login")
+public ResponseEntity<?> loginDelivery(@RequestBody Map<String, String> body, HttpSession session) {
 
-        if (person == null) {
-            response.put("error", "Delivery person not found");
-            return ResponseEntity.status(401).body(response);
-        }
+    System.out.println("🔵 [LOGIN] DeliveryPerson request received");
 
-        if (passwordEncoder.matches(password, person.getPassword())) {
-            session.setAttribute("deliveryId", person.getDid()); // session me ID store karo
-            manager.logActivity(person.getName(), "login as delivery person", "", "new");
-            response.put("message", "Login successful");
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("error", "Incorrect password");
-            return ResponseEntity.status(401).body(response);
-        }
+    String email = body.get("email");
+    String password = body.get("password");
+
+    DeliveryPerson person = deliveryService.authenticate(email);
+    if (person == null) {
+        System.out.println("❌ DeliveryPerson not found");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Delivery person not found"));
     }
+
+    if (!passwordEncoder.matches(password, person.getPassword())) {
+        System.out.println("❌ Password mismatch for delivery person");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Incorrect password"));
+    }
+
+    // ✅ SESSION
+    session.setAttribute("deliveryId", person.getDid());
+    session.setMaxInactiveInterval(60 * 60); // 1 hour
+
+    // ✅ Spring Security context
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+            person, null, Collections.singletonList(new SimpleGrantedAuthority("DELIVERY"))
+    );
+    SecurityContextHolder.getContext().setAuthentication(auth);
+
+    System.out.println("✅ DeliveryPerson login successful. Session ID: " + session.getId());
+    manager.logActivity(person.getName(), "login as delivery person", "", "info");
+
+    return ResponseEntity.ok(Map.of("message", "DeliveryPerson login successful"));
+}
+
 
     // ✅ Register
     @PostMapping("/register")
