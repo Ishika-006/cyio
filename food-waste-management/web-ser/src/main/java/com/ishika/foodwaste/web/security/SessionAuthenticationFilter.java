@@ -15,13 +15,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.ishika.foodwaste.web.service.DonorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.util.List;
 
 import java.io.IOException;
 import java.util.Collections;
 
+@Component
 public class SessionAuthenticationFilter extends OncePerRequestFilter {
 
+    @Autowired
+    private DonorService donorService;
  @Override
 protected void doFilterInternal(HttpServletRequest request,
                                 HttpServletResponse response,
@@ -65,27 +70,20 @@ protected void doFilterInternal(HttpServletRequest request,
 
         // 🔹 Donor
       
-     if (session != null &&
-        SecurityContextHolder.getContext().getAuthentication() == null) {
+   Integer donorId = (Integer) session.getAttribute("donorId");
+            if (donorId != null) {
+                Donor donor = donorService.findById(donorId);
+                if (donor != null) {
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(
+                                    donor,
+                                    null,
+                                    Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
+                            )
+                    );
+                }
+            }
 
-    // 🔹 DonorId se authenticate karna
-    Integer donorId = (Integer) session.getAttribute("donorId");
-    if (donorId != null) {
-        // DonorService ko inject karo filter me ya singleton bean use karo
-        Donor donor = ApplicationContextProvider.getBean(DonorService.class).findById(donorId);
-
-        if (donor != null) {
-            UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(
-                    donor,
-                    null,
-                    Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
-                );
-
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-    }
-}
 
 
         // 🔹 NGO
