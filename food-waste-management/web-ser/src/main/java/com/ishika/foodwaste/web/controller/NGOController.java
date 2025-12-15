@@ -91,13 +91,6 @@ public ResponseEntity<?> loginNGO(@RequestBody Map<String, String> body, HttpSes
     // ✅ SESSION
     session.setAttribute("ngoId", ngo.getId());
     session.setMaxInactiveInterval(60 * 60); // 1 hour
-
-    // ✅ Spring Security context
-    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            ngo, null, Collections.singletonList(new SimpleGrantedAuthority("NGO"))
-    );
-    SecurityContextHolder.getContext().setAuthentication(auth);
-
     System.out.println("✅ NGO login successful. Session ID: " + session.getId());
     manager.logActivity(ngo.getName(), "login as NGO", "", "info");
 
