@@ -52,6 +52,10 @@ public class DeliveryService implements DeliveryFacade {
 	        return "Registration successful";
 	    }
 
+	public DeliveryPerson findById(int id) {
+    return deliveryManager.findById(id);
+}
+
 	    @Override
 	    public List<FoodDonation> getUnassignedOrders(String city) {
 	        return deliveryManager.getUnassignedOrders(city);
