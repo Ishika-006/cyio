@@ -83,8 +83,8 @@ import com.ishika.foodwaste.jpa.enums.DonationStatus;
 	}
 	@Lob
     @JsonIgnore
-    @Column(name = "image", columnDefinition = "LONGBLOB")
-    private byte[] image;
+		@Column(columnDefinition = "BYTEA")
+		private byte[] image;
 
     public byte[] getImage() {
 		return image;
