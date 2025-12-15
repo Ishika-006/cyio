@@ -28,7 +28,8 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private DonorService donorService;
-    
+     @Autowired
+    private AdminService adminService;
  @Override
 protected void doFilterInternal(HttpServletRequest request,
                                 HttpServletResponse response,
