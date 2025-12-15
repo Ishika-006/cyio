@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ishika.foodwaste.web.service.DonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.ishika.foodwaste.web.service.AdminService;
 import java.util.List;
 
 import java.io.IOException;
