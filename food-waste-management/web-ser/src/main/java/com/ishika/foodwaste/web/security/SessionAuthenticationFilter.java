@@ -30,6 +30,8 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
     private DonorService donorService;
      @Autowired
     private AdminService adminService;
+       @Autowired
+    private com.ishika.foodwaste.web.service.NGOService ngoService;
  @Override
 protected void doFilterInternal(HttpServletRequest request,
                                 HttpServletResponse response,
@@ -94,17 +96,20 @@ protected void doFilterInternal(HttpServletRequest request,
 
 
         // 🔹 NGO
-        Object ngoObj = session.getAttribute("ngo");
-        if (ngoObj instanceof NGOS ngo && ngo.getRole() == Role.NGO) {
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(
-                            ngo,
-                            null,
-                            Collections.singletonList(new SimpleGrantedAuthority("NGO"))
-                    )
-            );
+      Integer ngoId = (Integer) session.getAttribute("ngoId");
+            if (ngoId != null) {
+                NGOS ngo = ngoService.findById(ngoId).orElse(null);
+                if (ngo != null) {
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(
+                                    ngo,
+                                    null,
+                                    Collections.singletonList(new SimpleGrantedAuthority("NGO"))
+                            )
+                    );
+                }
+            }
         }
-    }
 
     filterChain.doFilter(request, response);
 }
