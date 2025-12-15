@@ -209,7 +209,7 @@ public class FoodDonationManager {
     }
 
 //     ✅ Update donation by ID
-    public boolean updateDonation(int id, FoodDonation updated) {
+    public boolean updateDonation(Long id, FoodDonation updated) {
         try {
             em.getTransaction().begin();
             FoodDonation existing = em.find(FoodDonation.class, id);
