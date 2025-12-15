@@ -104,7 +104,7 @@ public class DonorService implements DonorFacade{
 //	    }
 
 	    @Override
-	    public boolean deleteDonationById(int id) {
+	    public boolean deleteDonationById(Long id) {
 	        if (repo.existsById(id)) {
 	            repo.deleteDonationById(id);
 	            return true;
@@ -115,7 +115,7 @@ public class DonorService implements DonorFacade{
 //	    public FoodDonation getDonationById(int id) {
 //	        return repo.findById(id);
 //	    }
-
+	    @Override
 	public Donor findById(Long id) {
     return dm.findById(id);
 }
