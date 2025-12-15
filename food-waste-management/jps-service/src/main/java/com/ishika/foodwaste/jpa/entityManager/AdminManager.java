@@ -123,7 +123,7 @@ public class AdminManager {
 	    // 3. Assign donation to ngos 
 	    @Transactional
 	    public String assignNGO(int donationId, int ngoId) {
-	        Optional<FoodDonation> optionalDonation = foodDonationRepo.findById(donationId);
+	        Optional<FoodDonation> optionalDonation = foodDonationRepo.findById(Long.valueOf(donationId));
 	        Optional<NGOS> optionalNGO = ngosRepo.findById(ngoId);
 
 	        if (optionalDonation.isEmpty()) {
