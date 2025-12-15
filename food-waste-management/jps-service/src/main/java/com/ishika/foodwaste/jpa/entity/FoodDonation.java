@@ -49,7 +49,7 @@ import com.ishika.foodwaste.jpa.enums.DonationStatus;
   public class FoodDonation {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-      private Long fid;
+      private int fid;
     private String name;
 
     private String email;
@@ -120,12 +120,12 @@ import com.ishika.foodwaste.jpa.enums.DonationStatus;
     private Donor donor;
 
 
-	public Long getFid() {
+	public int getFid() {
 		return fid;
 	}
 
 
-	public void setFid(Long fid) {
+	public void setFid(int fid) {
 		this.fid = fid;
 	}
 
