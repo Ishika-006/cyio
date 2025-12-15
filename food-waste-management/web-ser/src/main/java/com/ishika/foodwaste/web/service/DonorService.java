@@ -116,6 +116,11 @@ public class DonorService implements DonorFacade{
 //	        return repo.findById(id);
 //	    }
 
+	public Donor findById(Long id) {
+    return dm.findById(id);
+}
+
+
 	    @Override
 	    public List<FoodDonation> getAllDonations() {
 	        return repo.getAllDonations();
