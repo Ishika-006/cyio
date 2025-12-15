@@ -168,7 +168,7 @@ public class DonorService implements DonorFacade{
 	               }).sum();
 	    }
 	    @Override
-	    public List<FoodDonation> getDonationsByDonor(int donorId) {
+	    public List<FoodDonation> getDonationsByDonor(Long donorId) {
 	        TypedQuery<FoodDonation> query = em.createQuery(
 	            "SELECT f FROM FoodDonation f WHERE f.donor.id = :donorId", FoodDonation.class);
 	        query.setParameter("donorId", donorId);
