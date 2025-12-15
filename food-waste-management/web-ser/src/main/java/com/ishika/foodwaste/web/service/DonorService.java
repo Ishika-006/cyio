@@ -104,10 +104,9 @@ public class DonorService implements DonorFacade{
 //	    }
 
 	    @Override
-	    public boolean deleteDonationById(Long id) {
-			   int donationId = id.intValue();
-	        if (repo.existsById(donationId)) {
-	            repo.deleteDonationById(donationId);
+	    public boolean deleteDonationById(int id) {
+	        if (repo.existsById(id)) {
+	            repo.deleteDonationById(id);
 	            return true;
 	        }
 	        return false;
@@ -117,7 +116,7 @@ public class DonorService implements DonorFacade{
 //	        return repo.findById(id);
 //	    }
 	    @Override
-	public Donor findById(Long id) {
+	public Donor findById(int id) {
     return dm.findById(id);
 }
 
@@ -169,14 +168,14 @@ public class DonorService implements DonorFacade{
 	               }).sum();
 	    }
 	    @Override
-	    public List<FoodDonation> getDonationsByDonor(Long donorId) {
+	    public List<FoodDonation> getDonationsByDonor(int donorId) {
 	        TypedQuery<FoodDonation> query = em.createQuery(
 	            "SELECT f FROM FoodDonation f WHERE f.donor.id = :donorId", FoodDonation.class);
 	        query.setParameter("donorId", donorId);
 	        return query.getResultList();
 	    }
 	    
-	    public List<FoodDonation> getRecentDonationsByDonor(Long donorId) {
+	    public List<FoodDonation> getRecentDonationsByDonor(int donorId) {
 	        return repo.getRecentDonationsByDonor(donorId);
 	    }
 
@@ -185,7 +184,7 @@ public class DonorService implements DonorFacade{
 	        repo.save1(donor);
 	    }
 	    
-	    public List<DeliveryDto> getDeliveriesByDonorIds(Long donorId) {
+	    public List<DeliveryDto> getDeliveriesByDonorIds(int donorId) {
 	        List<FoodDonation> donations = repo.findDeliveriesByDonorId(donorId);
 	        List<DeliveryDto> deliveryDtos = new ArrayList<>();
 	        for (FoodDonation donation : donations) {
@@ -265,7 +264,7 @@ public class DonorService implements DonorFacade{
 
 	
 	    
-	    public LocationDto getLocationByDeliveryId(Long fid) {
+	    public LocationDto getLocationByDeliveryId(int fid) {
 	        Optional<FoodDonation> deliveryOpt = repo.findById(fid);
 	        if (deliveryOpt.isEmpty()) {
 	            System.out.println("❌ No donation found with id: " + fid);
