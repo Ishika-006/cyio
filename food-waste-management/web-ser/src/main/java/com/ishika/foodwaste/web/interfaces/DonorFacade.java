@@ -15,6 +15,7 @@ public interface DonorFacade {
 //	    Donor findById(int id);
 	    Donor authenticate(String email);
 	    boolean registerAdmin(Donor donor);
+		Donor findById(Long id);
 	    public boolean addDonation(FoodDonation donation);
 	    public boolean deleteDonationById(Long id);
 	    public List<FoodDonation> getAllDonations();
