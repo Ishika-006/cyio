@@ -46,9 +46,9 @@ public class FoodDonationManager {
         }
         return false;
     }
-public Optional<FoodDonation> findById(Long fid) {
-    return Optional.ofNullable(em.find(FoodDonation.class, fid));
-}
+// public Optional<FoodDonation> findById(Long fid) {
+//     return Optional.ofNullable(em.find(FoodDonation.class, fid));
+// }
 
 //    public FoodDonation findById(int id) {
 //        try {
