@@ -74,8 +74,7 @@ public class AdminService implements AdminFacade {
 	    private AdminManager adminRepo;
 	    @Autowired
 	    private RecentActivityManager recentActivityRepo;
-	    @PersistenceContext
-           EntityManager em;
+	
 	    
 
 	    @Override
@@ -273,11 +272,11 @@ public class AdminService implements AdminFacade {
 	    
 
 	    public List<DeliveryPerson> getAllDeliveryPersons() {
-	        return em.createQuery("SELECT d FROM DeliveryPerson d", DeliveryPerson.class).getResultList();
+	        return entityManager.createQuery("SELECT d FROM DeliveryPerson d", DeliveryPerson.class).getResultList();
 	    }
 
 	    public List<DeliveryPerson> searchDeliveryPersons(String keyword) {
-	        return em.createQuery("SELECT d FROM DeliveryPerson d WHERE LOWER(d.name) LIKE :keyword OR LOWER(d.email) LIKE :keyword OR LOWER(d.city) LIKE :keyword", DeliveryPerson.class)
+	        return entityManager.createQuery("SELECT d FROM DeliveryPerson d WHERE LOWER(d.name) LIKE :keyword OR LOWER(d.email) LIKE :keyword OR LOWER(d.city) LIKE :keyword", DeliveryPerson.class)
 	                .setParameter("keyword", "%" + keyword.toLowerCase() + "%")
 	                .getResultList();
 	    }
