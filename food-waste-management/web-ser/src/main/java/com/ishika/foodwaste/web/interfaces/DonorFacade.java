@@ -16,7 +16,7 @@ public interface DonorFacade {
 	    Donor authenticate(String email);
 	    boolean registerAdmin(Donor donor);
 	    public boolean addDonation(FoodDonation donation);
-	    public boolean deleteDonationById(int id);
+	    public boolean deleteDonationById(Long id);
 	    public List<FoodDonation> getAllDonations();
 	    public List<FoodDonation> getDonationsByLocation(String location);
 	    public long getDonationCount();
@@ -24,5 +24,5 @@ public interface DonorFacade {
 	    public long getMonthlyDonationCount();
 	    public long getPeopleHelpedEstimate();
 	    public long getTotalFoodSavedInKg();
-	    public List<FoodDonation> getDonationsByDonor(int donorId);
+	    public List<FoodDonation> getDonationsByDonor(Long donorId);
 }
