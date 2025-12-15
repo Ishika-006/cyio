@@ -24,6 +24,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+
 @Repository
 @Transactional
 public class FoodDonationManager {
@@ -34,9 +36,9 @@ public class FoodDonationManager {
     // ✅ Add a new food donation
     public boolean addDonation(FoodDonation donation) {
         try {
-            em.getTransaction().begin();
+            // em.getTransaction().begin();
             em.persist(donation);
-            em.getTransaction().commit();
+            // em.getTransaction().commit();
             return true;
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -44,11 +46,10 @@ public class FoodDonationManager {
         }
         return false;
     }
-    public Optional<FoodDonation> findById(int donationId) {
-        FoodDonation donation = em.find(FoodDonation.class, donationId);
-        return Optional.ofNullable(donation);
-    }
-//    
+public Optional<FoodDonation> findById(Long fid) {
+    return Optional.ofNullable(em.find(FoodDonation.class, fid));
+}
+
 //    public FoodDonation findById(int id) {
 //        try {
 //            return em.find(FoodDonation.class, id);
@@ -202,7 +203,8 @@ public class FoodDonationManager {
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+          return new ArrayList<>();
+
         }
     }
 
