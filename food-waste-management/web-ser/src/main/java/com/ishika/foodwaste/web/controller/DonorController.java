@@ -423,7 +423,7 @@ public List<FoodDonation> getRecentDonations(HttpSession session) {
     }
     
     @GetMapping("/donor/{donorId}")
-    public List<FoodDonation> getByDonor(@PathVariable Long donorId,HttpSession session) {
+    public List<FoodDonation> getByDonor(@PathVariable int donorId,HttpSession session) {
         return donorService.getDonationsByDonor(donorId);
     }
 
