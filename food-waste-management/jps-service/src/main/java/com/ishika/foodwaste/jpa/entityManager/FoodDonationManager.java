@@ -73,7 +73,7 @@ public class FoodDonationManager {
         }
     }
     @Transactional
-    public List<FoodDonation> findDeliveriesByDonorId(Long donorId) {
+    public List<FoodDonation> findDeliveriesByDonorId(int donorId) {
         try {
             TypedQuery<FoodDonation> query = em.createQuery(
                 "SELECT f FROM FoodDonation f WHERE f.donor.id = :donorId", FoodDonation.class);
@@ -86,7 +86,7 @@ public class FoodDonationManager {
     }
     
     @Transactional
-    public Optional<FoodDonation> findById(Long fid) {
+    public Optional<FoodDonation> findById(int fid) {
         try {
             TypedQuery<FoodDonation> query = em.createQuery(
                 "SELECT f FROM FoodDonation f WHERE f.fid = :fid", FoodDonation.class);
@@ -209,7 +209,7 @@ public class FoodDonationManager {
     }
 
 //     ✅ Update donation by ID
-    public boolean updateDonation(Long id, FoodDonation updated) {
+    public boolean updateDonation(int id, FoodDonation updated) {
         try {
             em.getTransaction().begin();
             FoodDonation existing = em.find(FoodDonation.class, id);
