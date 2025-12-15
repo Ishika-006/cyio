@@ -43,8 +43,9 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     RecentActivityManager manager;
-  
-;
+    @Autowired
+private PasswordEncoder passwordEncoder;
+
    
 
 //    @PostMapping("/login")
