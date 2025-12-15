@@ -64,22 +64,28 @@ protected void doFilterInternal(HttpServletRequest request,
 
         // 🔹 Donor
       
-        if (session != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null) {
+     if (session != null &&
+        SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            Donor donor = (Donor) session.getAttribute("donor");
+    // 🔹 DonorId se authenticate karna
+    Integer donorId = (Integer) session.getAttribute("donorId");
+    if (donorId != null) {
+        // DonorService ko inject karo filter me ya singleton bean use karo
+        Donor donor = ApplicationContextProvider.getBean(DonorService.class).findById(donorId);
 
-            if (donor != null) {
-                UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                        donor,
-                        null,
-                        Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
-                    );
+        if (donor != null) {
+            UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                    donor,
+                    null,
+                    Collections.singletonList(new SimpleGrantedAuthority("DONOR"))
+                );
 
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
+            SecurityContextHolder.getContext().setAuthentication(auth);
         }
+    }
+}
+
 
         // 🔹 NGO
         Object ngoObj = session.getAttribute("ngo");
