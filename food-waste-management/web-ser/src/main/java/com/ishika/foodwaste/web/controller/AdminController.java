@@ -42,8 +42,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     RecentActivityManager manager;
   
 ;
@@ -93,8 +91,6 @@ public ResponseEntity<?> login(
     
 @PostMapping("/register")
 public ResponseEntity<?> registerAdmin(@RequestBody Admin admin) {
-
-    admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 
     boolean success = adminService.registerAdmin(admin);
 
