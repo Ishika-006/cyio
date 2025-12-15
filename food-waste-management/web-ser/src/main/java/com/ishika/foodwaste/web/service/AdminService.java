@@ -387,10 +387,11 @@ public class AdminService implements AdminFacade {
 	        return foodDonationRepo.countDonationsGroupedByMonth();
 	    }
 	    
-	    @Transactional
-	    public void save(Admin a) {
-	    	foodDonationRepo.save4(a);
-	    }
+		@Transactional
+		public void save(Admin a) {
+		    adminRepo.saveAdmin(a);
+		}
+
 
 
 }
