@@ -104,7 +104,7 @@ public class DonorController {
         }
 
         // ✅ SESSION SET
-        session.setAttribute("donor", donor);
+        session.setAttribute("donorId", donor.getId());
         session.setMaxInactiveInterval(60 * 60); // 1 hour
 
         System.out.println("✅ [LOGIN] Login successful");
@@ -210,11 +210,10 @@ public ResponseEntity<String> addDonation(
 ) {
     try {
         // ✅ Get donor from session
-        Donor donor = (Donor) session.getAttribute("donor");
-        if (donor == null) {
-            System.out.println("⚠️ [ADD DONATE] User not logged in");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
-        }
+		Long donorId = (Long) session.getAttribute("donorId");
+		if (donorId == null) {
+		    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
+		}
 
         FoodDonation donation = new FoodDonation();
         donation.setName(name);
@@ -230,7 +229,8 @@ public ResponseEntity<String> addDonation(
         donation.setImage(image.getBytes());
 
         // ✅ Set donor & status
-        donation.setDonor(donor);
+     Donor donor = dm.findById(donorId); // 🔥 managed entity
+		donation.setDonor(donor);
         donation.setStatus(DonationStatus.PENDING);
 
         boolean added = donorService.addDonation(donation);
