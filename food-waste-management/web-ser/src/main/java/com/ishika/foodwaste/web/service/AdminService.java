@@ -85,7 +85,6 @@ public class AdminService implements AdminFacade {
 	    }
 	    @Override
 	    public boolean registerAdmin(Admin admin) {
-	        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 	        return adminRepo.saveAdmin(admin);
 	    }
 	    @Override
