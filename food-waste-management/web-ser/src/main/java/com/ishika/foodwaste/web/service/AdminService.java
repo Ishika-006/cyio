@@ -392,6 +392,10 @@ public class AdminService implements AdminFacade {
 		    adminRepo.saveAdmin(a);
 		}
 
+	public Admin findById(int id) {
+    return adminRepo.findById(id);  // assume adminRepo me findById(Integer) method hai
+}
+
 
 
 }
