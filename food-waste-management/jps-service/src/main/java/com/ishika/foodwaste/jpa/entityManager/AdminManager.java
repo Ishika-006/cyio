@@ -59,6 +59,11 @@ public class AdminManager {
 	    public List<FoodDonation> getUnassignedDonationsByLocation(String location) {
 	        return foodDonationRepo.getDonationsByLocation(location);
 	    }
+	@Transactional
+public Admin findById(int id) {
+    return entityManager.find(Admin.class, id);
+}
+
 
 	    // 5. Assign delivery person to a donation
 	    @Transactional
