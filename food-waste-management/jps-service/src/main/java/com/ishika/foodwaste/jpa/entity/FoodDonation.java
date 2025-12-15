@@ -49,7 +49,7 @@ import com.ishika.foodwaste.jpa.enums.DonationStatus;
   public class FoodDonation {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-      private int fid;
+      private Long fid;
     private String name;
 
     private String email;
