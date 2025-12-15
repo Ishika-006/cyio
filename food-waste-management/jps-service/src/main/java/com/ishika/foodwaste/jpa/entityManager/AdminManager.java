@@ -63,7 +63,7 @@ public class AdminManager {
 	    // 5. Assign delivery person to a donation
 	    @Transactional
 	    public boolean assignDelivery(int donationId, int deliveryPersonId) {
-	        FoodDonation donation = entityManager.find(FoodDonation.class, donationId);
+	        FoodDonation donation = entityManager.find(FoodDonation.class, Long.valueOf(donationId));
 	        DeliveryPerson deliveryPerson = entityManager.find(DeliveryPerson.class, deliveryPersonId);
 
 	        if (donation == null || deliveryPerson == null) return false;
