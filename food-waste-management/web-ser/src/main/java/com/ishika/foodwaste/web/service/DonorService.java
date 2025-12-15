@@ -105,6 +105,7 @@ public class DonorService implements DonorFacade{
 
 	    @Override
 	    public boolean deleteDonationById(Long id) {
+			   int donationId = id.intValue();
 	        if (repo.existsById(id)) {
 	            repo.deleteDonationById(id);
 	            return true;
