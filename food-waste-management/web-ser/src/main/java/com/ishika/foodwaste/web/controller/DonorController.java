@@ -233,8 +233,9 @@ public ResponseEntity<String> addDonation(
         donation.setImage(image.getBytes());
 
         // ✅ Set donor & status
-     Donor donor = dm.findById(donorId); // 🔥 managed entity
+		  Donor donor = donorService.findById(donorId);
 		donation.setDonor(donor);
+
         donation.setStatus(DonationStatus.PENDING);
 
         boolean added = donorService.addDonation(donation);
@@ -293,7 +294,7 @@ public ResponseEntity<String> addSell(
         donation.setImage(image.getBytes());
 
     Donor donor = donorService.findById(donorId); // managed entity
-donation.setDonor(donor);;
+     donation.setDonor(donor);;
         donation.setStatus(DonationStatus.PENDING);
 
         boolean added = donorService.addDonation(donation);
