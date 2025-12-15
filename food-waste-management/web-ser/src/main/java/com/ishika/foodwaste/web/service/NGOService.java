@@ -39,4 +39,8 @@ public class NGOService implements NGOFacade {
 	    public void save(NGOS ngo) {
 	        repo.save2(ngo);
 	    }
+
+	public NGOS findById(Integer id) {
+    return nm.findById(id);
+}
 }
