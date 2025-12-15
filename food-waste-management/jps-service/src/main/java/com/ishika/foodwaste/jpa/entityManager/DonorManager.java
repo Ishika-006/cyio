@@ -71,7 +71,7 @@ public class DonorManager {
     }
 
 @Transactional
-public Donor findById(Long id) {
+public Donor findById(int id) {
     return em.find(Donor.class, id);
 }
 
