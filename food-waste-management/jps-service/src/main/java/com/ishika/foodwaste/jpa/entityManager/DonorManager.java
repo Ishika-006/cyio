@@ -70,15 +70,11 @@ public class DonorManager {
         }
     }
 
-    @Transactional
-    public Donor findById(int id) {
-        try {
-            return em.find(Donor.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+@Transactional
+public Donor findById(Long id) {
+    return em.find(Donor.class, id);
+}
+
     public long count() {
         try {
             TypedQuery<Long> query = em.createQuery("SELECT COUNT(d) FROM Donor d", Long.class);
