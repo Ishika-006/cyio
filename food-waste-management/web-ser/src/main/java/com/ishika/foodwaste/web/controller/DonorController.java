@@ -225,7 +225,11 @@ public ResponseEntity<String> addDonation(
         donation.setQuantity(quantity);
         donation.setAddress(address);
         donation.setLocation(location);
-        donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+	       try {
+	    donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+	} catch (Exception e) {
+	    donation.setDate(LocalDateTime.now());
+	}
         donation.setImage(image.getBytes());
 
         // ✅ Set donor & status
@@ -265,11 +269,10 @@ public ResponseEntity<String> addSell(
         HttpSession session
 ) {
     try {
-        Donor donor = (Donor) session.getAttribute("donor");
-        if (donor == null) {
-            System.out.println("⚠️ [ADD SELL] User not logged in");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in.");
-        }
+		       Long donorId = (Long) session.getAttribute("donorId");
+		if (donorId == null) {
+		    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not logged in");
+		}
 
         FoodDonation donation = new FoodDonation();
         donation.setName(name);
@@ -282,10 +285,15 @@ public ResponseEntity<String> addSell(
         donation.setPrice(price);
         donation.setAddress(address);
         donation.setLocation(location);
-        donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+     try {
+    donation.setDate(OffsetDateTime.parse(date).toLocalDateTime());
+} catch (Exception e) {
+    donation.setDate(LocalDateTime.now());
+}
         donation.setImage(image.getBytes());
 
-        donation.setDonor(donor);
+    Donor donor = donorService.findById(donorId); // managed entity
+donation.setDonor(donor);;
         donation.setStatus(DonationStatus.PENDING);
 
         boolean added = donorService.addDonation(donation);
