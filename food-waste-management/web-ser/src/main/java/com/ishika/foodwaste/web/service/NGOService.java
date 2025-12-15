@@ -33,7 +33,6 @@ public class NGOService implements NGOFacade {
 	    }
 	    @Override
 	    public boolean registerNGO(NGOS ngo) {
-	    	ngo.setPassword(passwordEncoder.encode(ngo.getPassword()));
 	        return nm.save(ngo);
 	    }
 	    @Transactional
