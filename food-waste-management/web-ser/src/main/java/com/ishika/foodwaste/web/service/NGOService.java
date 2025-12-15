@@ -40,7 +40,7 @@ public class NGOService implements NGOFacade {
 	        repo.save2(ngo);
 	    }
 
-	public NGOS findById(Integer id) {
+	public NGOS findById(int id) {
     return nm.findById(id);
 }
 }
