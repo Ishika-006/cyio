@@ -20,7 +20,7 @@ public class DeliveryLocationService {
     private DeliveryLocationManager deliveryLocationRepository;
 
     // Helper method to get DeliveryPerson by ID
-    public DeliveryPerson findDeliveryPersonById(Long deliveryId) {
+    public DeliveryPerson findDeliveryPersonById(int deliveryId) {
         return deliveryPersonRepository.findById(deliveryId);
     }
 
