@@ -27,6 +27,7 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private DonorService donorService;
+    
  @Override
 protected void doFilterInternal(HttpServletRequest request,
                                 HttpServletResponse response,
@@ -45,16 +46,20 @@ protected void doFilterInternal(HttpServletRequest request,
     if (session != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
         // 🔹 Admin
-        Object adminObj = session.getAttribute("admin");
-        if (adminObj instanceof Admin admin) {
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(
-                            admin,
-                            null,
-                            Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))
-                    )
-            );
-        }
+            Integer adminId = (Integer) session.getAttribute("adminId");
+            if (adminId != null) {
+                Admin admin = adminService.findById(adminId);
+                if (admin != null) {
+                    SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(
+                                admin,
+                                null,
+                                Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))
+                        )
+                    );
+                }
+            }
+            
 
         // 🔹 Delivery Person
         Object deliveryObj = session.getAttribute("delivery");
