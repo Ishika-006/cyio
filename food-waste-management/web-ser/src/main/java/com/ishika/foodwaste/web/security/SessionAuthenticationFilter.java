@@ -105,7 +105,7 @@ protected void doFilterInternal(HttpServletRequest request,
         // 🔹 NGO
       Integer ngoId = (Integer) session.getAttribute("ngoId");
             if (ngoId != null) {
-                NGOS ngo = ngoService.findById(ngoId).orElse(null);
+                NGOS ngo = ngoService.findById(ngoId);
                 if (ngo != null) {
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(
