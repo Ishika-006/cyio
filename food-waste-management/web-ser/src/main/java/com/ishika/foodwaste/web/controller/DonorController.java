@@ -314,44 +314,48 @@ public ResponseEntity<String> addSell(
 
     
     @GetMapping("/deliveries")
-    public ResponseEntity<List<DeliveryDto>> getDonorDeliveries(HttpSession session) {
-        Donor loggedInDonor = (Donor) session.getAttribute("donor");
-        if (loggedInDonor == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+public ResponseEntity<List<DeliveryDto>> getDonorDeliveries(HttpSession session) {
+    Long donorId = (Long) session.getAttribute("donorId");
+    if (donorId == null) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 
-        // 1. Recent donations fetch karo
-        List<FoodDonation> recentDonations = donorService.getRecentDonationsByDonor(loggedInDonor.getId());
+    List<FoodDonation> recentDonations =
+            donorService.getRecentDonationsByDonor(donorId);
 
-        // 2. Use DeliveryDto me convert karo
-        List<DeliveryDto> deliveryDtos = new ArrayList<>();
-        for (FoodDonation donation : recentDonations) {
-            DeliveryDto dto = new DeliveryDto(donation.getFid(), donation.getName());
-            deliveryDtos.add(dto);
-        }
+    List<DeliveryDto> deliveryDtos = new ArrayList<>();
+    for (FoodDonation donation : recentDonations) {
+        deliveryDtos.add(new DeliveryDto(donation.getFid(), donation.getName()));
+    }
 
-        return deliveryDtos.isEmpty()
+    return deliveryDtos.isEmpty()
             ? ResponseEntity.noContent().build()
             : ResponseEntity.ok(deliveryDtos);
+}
+
+
+@GetMapping("/deliveries/{fid}/location")
+public ResponseEntity<LocationDto> getDeliveryLocation(
+        @PathVariable String fid,
+        HttpSession session) {
+
+    Long donorId = (Long) session.getAttribute("donorId");
+    if (donorId == null) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-
-    @GetMapping("/deliveries/{fid}/location")
-    public ResponseEntity<LocationDto> getDeliveryLocation(@PathVariable String fid,HttpSession session) {
-        Donor loggedInDonor = (Donor) session.getAttribute("donor");
-        Long deliveryId;
-        try {
-            deliveryId = Long.parseLong(fid);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
-        LocationDto location = donorService.getLocationByDeliveryId(deliveryId);
-        if (location == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(location);
+    Long deliveryId;
+    try {
+        deliveryId = Long.parseLong(fid);
+    } catch (NumberFormatException e) {
+        return ResponseEntity.badRequest().build();
     }
 
+    LocationDto location = donorService.getLocationByDeliveryId(deliveryId);
+    return location == null
+            ? ResponseEntity.notFound().build()
+            : ResponseEntity.ok(location);
+}
 
 
 
@@ -397,14 +401,15 @@ public ResponseEntity<String> addSell(
     public long getDonationCount(HttpSession session) {
         return donorService.getDonationCount();
     }
-    @GetMapping("/recent")
-    public List<FoodDonation> getRecentDonations(HttpSession session) {
-        Donor donor = (Donor) session.getAttribute("donor");
-        if (donor != null) {
-            return donorService.getRecentDonationsByDonor(donor.getId());
-        }
+@GetMapping("/recent")
+public List<FoodDonation> getRecentDonations(HttpSession session) {
+    Long donorId = (Long) session.getAttribute("donorId");
+    if (donorId == null) {
         return Collections.emptyList();
     }
+    return donorService.getRecentDonationsByDonor(donorId);
+}
+
 
     
     @GetMapping("/people-helped")
@@ -418,7 +423,7 @@ public ResponseEntity<String> addSell(
     }
     
     @GetMapping("/donor/{donorId}")
-    public List<FoodDonation> getByDonor(@PathVariable int donorId,HttpSession session) {
+    public List<FoodDonation> getByDonor(@PathVariable Long donorId,HttpSession session) {
         return donorService.getDonationsByDonor(donorId);
     }
 
