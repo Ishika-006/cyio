@@ -41,6 +41,6 @@ public class NGOService implements NGOFacade {
 	    }
 
 	public NGOS findById(int id) {
-    return nm.findById(id).orElse(null);;
+    return nm.findById(id).orElse(null);
 }
 }
