@@ -54,16 +54,14 @@ public class NGOController {
     public ResponseEntity<?> registerNGO(@RequestBody NGOS ngo) {
 		 ngo.setPassword(passwordEncoder.encode(ngo.getPassword()));
         boolean success = ngoService.registerNGO(ngo);
-
-        Map<String, Object> response = new HashMap<>();
         if (success) {
-            response.put("message", "NGO registered successfully");
+             System.out.println("✅ [REGISTER] Success for " + ngo.getEmail());
             manager.logActivity(ngo.getName(), "registered as ngo", "", "new");
-            return ResponseEntity.ok(response);
-        } else {
-            response.put("message", "NGO registration failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
+           return ResponseEntity.ok(Map.of("message", "ngo registered successfully"));
+        }     
+		System.out.println("❌ [REGISTER] Failed for " + ngo.getEmail());
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", "ngo registration failed"));
     }
 	    
 	    
