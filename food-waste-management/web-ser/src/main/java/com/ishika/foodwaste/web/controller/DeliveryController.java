@@ -85,6 +85,7 @@ public ResponseEntity<?> loginDelivery(@RequestBody Map<String, String> body, Ht
     // ✅ Register
     @PostMapping("/register")
     public ResponseEntity<?> registerDelivery(@RequestBody DeliveryPerson person) {
+		  person.setPassword(passwordEncoder.encode(person.getPassword()));
         String result = deliveryService.register(person);
         if (result.contains("successful")) {
             manager.logActivity(person.getName(), "registered as delivery person", "", "new");
