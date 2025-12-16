@@ -52,6 +52,7 @@ public class NGOController {
   
 	  @PostMapping("/register")
     public ResponseEntity<?> registerNGO(@RequestBody NGOS ngo) {
+		 ngo.setPassword(passwordEncoder.encode(ngo.getPassword()));
         boolean success = ngoService.registerNGO(ngo);
 
         Map<String, Object> response = new HashMap<>();
